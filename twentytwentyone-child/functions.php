@@ -1,9 +1,9 @@
 <?php
 // send an automated user 'inactivity' email
 //* Add action on login to update the last_login user meta
-add_action( 'wp_login', '_user_last_login', 10, 2 );
-function _user_last_login( $user_login, $user ) {
-    update_user_meta( $user->ID, 'last_login', time() );
+add_action( 'wp_login', 'lp_user_last_login', 10, 2 );
+function lp_user_last_login( $user_login, $user ) {
+    update_user_meta( $user->ID, 'lp_last_login', time() );
 }
 
 //* Schedule a daily cron event
@@ -12,12 +12,12 @@ if( ! wp_next_scheduled( '_inactivity_reminder' ) ) {
 }
 
 //* Add action to daily cron event
-add_action( '_inactivity_reminder', '_inactivity_reminder' );
+add_action( 'lp_inactivity_reminder', 'lp_inactivity_reminder' );
 function _inactivity_reminder() {
     //* Get the contributors and authors who haven't logged in in 20 days ( X days)
     $users = new \WP_User_Query( [
         'role'         => [ 'contributor', 'author', ],
-        'meta_key'     => 'last_login',
+        'meta_key'     => 'lp_last_login',
         'meta_value'   => strtotime( '-20 days' ),
         'meta_compare' => '<',
     ] );
