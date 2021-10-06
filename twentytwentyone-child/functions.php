@@ -159,7 +159,7 @@ function user_last_login( $user_login, $user )
     return $user_login;
 }
 
-wp_schedule_event(time(), 'weekly', 'new_user_followup');
+wp_schedule_event(time(), 'weekly', 'lp_list_course' );
 
 function lp_list_course( $data, $user ) {
     global $wpdb;
